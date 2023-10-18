@@ -5,9 +5,9 @@
   "repository":
   {
     "type": "git",
-    "url": "https://github.com/jonblack/arduino-menusystem.git"
+    "url": "https://github.com/CDFER/arduino-menusystem"
   },
-  "version": "3.0.0",
+  "version": "4.0.0",
   "frameworks": "arduino",
   "platforms": "atmelavr"
 }
