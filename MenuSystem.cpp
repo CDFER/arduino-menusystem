@@ -11,26 +11,42 @@
 MenuComponent::MenuComponent(const char *name, const char *icon, SelectFnPtr select_fn)
 	: _name(name), _icon(icon), _has_focus(false), _is_current(false), _select_fn(select_fn) {}
 
-const char *MenuComponent::get_name() const { return _name; }
+const char *MenuComponent::get_name() const {
+	return _name;
+}
 
-const char *MenuComponent::get_icon() const { return _icon; }
+const char *MenuComponent::get_icon() const {
+	return _icon;
+}
 
-void MenuComponent::set_name(const char *name) { _name = name; }
+void MenuComponent::set_name(const char *name) {
+	_name = name;
+}
 
-bool MenuComponent::has_focus() const { return _has_focus; }
+bool MenuComponent::has_focus() const {
+	return _has_focus;
+}
 
-void MenuComponent::set_focus(bool hasFocus) { _has_focus = hasFocus; }
+void MenuComponent::set_focus(bool hasFocus) {
+	_has_focus = hasFocus;
+}
 
-bool MenuComponent::is_current() const { return _is_current; }
+bool MenuComponent::is_current() const {
+	return _is_current;
+}
 
-void MenuComponent::set_current(bool is_current) { _is_current = is_current; }
+void MenuComponent::set_current(bool is_current) {
+	_is_current = is_current;
+}
 
 Menu *MenuComponent::select() {
 	if (_select_fn != nullptr) _select_fn(this);
 	return nullptr;
 }
 
-void MenuComponent::set_select_function(SelectFnPtr select_fn) { _select_fn = select_fn; }
+void MenuComponent::set_select_function(SelectFnPtr select_fn) {
+	_select_fn = select_fn;
+}
 
 // *********************************************************
 // Menu
@@ -114,7 +130,9 @@ void Menu::reset() {
 	_p_current_component->set_current();
 }
 
-void Menu::add_item(MenuItem *p_item) { add_component((MenuComponent *)p_item); }
+void Menu::add_item(MenuItem *p_item) {
+	add_component((MenuComponent *)p_item);
+}
 
 void Menu::add_menu(Menu *p_menu) {
 	add_component((MenuComponent *)p_menu);
@@ -137,21 +155,37 @@ void Menu::add_component(MenuComponent *p_component) {
 	_num_components++;
 }
 
-Menu const *Menu::get_parent() const { return _p_parent; }
+Menu const *Menu::get_parent() const {
+	return _p_parent;
+}
 
-void Menu::set_parent(Menu *p_parent) { _p_parent = p_parent; }
+void Menu::set_parent(Menu *p_parent) {
+	_p_parent = p_parent;
+}
 
-MenuComponent const *Menu::get_menu_component(uint8_t index) const { return _menu_components[index]; }
+MenuComponent const *Menu::get_menu_component(uint8_t index) const {
+	return _menu_components[index];
+}
 
-MenuComponent const *Menu::get_current_component() const { return _p_current_component; }
+MenuComponent const *Menu::get_current_component() const {
+	return _p_current_component;
+}
 
-uint8_t Menu::get_num_components() const { return _num_components; }
+uint8_t Menu::get_num_components() const {
+	return _num_components;
+}
 
-uint8_t Menu::get_current_component_num() const { return _current_component_num; }
+uint8_t Menu::get_current_component_num() const {
+	return _current_component_num;
+}
 
-uint8_t Menu::get_previous_component_num() const { return _previous_component_num; }
+uint8_t Menu::get_previous_component_num() const {
+	return _previous_component_num;
+}
 
-void Menu::render(MenuComponentRenderer const &renderer) const { renderer.render_menu(*this); }
+void Menu::render(MenuComponentRenderer const &renderer) const {
+	renderer.render_menu(*this);
+}
 
 // *********************************************************
 // BackMenuItem
@@ -166,27 +200,34 @@ Menu *BackMenuItem::select() {
 	return nullptr;
 }
 
-void BackMenuItem::render(MenuComponentRenderer const &renderer) const { renderer.render_back_menu_item(*this); }
+void BackMenuItem::render(MenuComponentRenderer const &renderer) const {
+	renderer.render_back_menu_item(*this);
+}
 
 // *********************************************************
 // MenuItem
 // *********************************************************
-MenuItem::MenuItem(const char *name, const char *icon, SelectFnPtr select_fn) : MenuComponent(name, icon, select_fn) {}
+MenuItem::MenuItem(const char *name, const char *icon, SelectFnPtr select_fn)
+	: MenuComponent(name, icon, select_fn) {}
 
 Menu *MenuItem::select() {
 	if (_select_fn != nullptr) _select_fn(this);
 	return nullptr;
 }
 
-void MenuItem::reset() {
-	// Do nothing.
+void MenuItem::reset() { /* Do nothing. */ }
+
+void MenuItem::render(MenuComponentRenderer const &renderer) const {
+	renderer.render_menu_item(*this);
 }
 
-void MenuItem::render(MenuComponentRenderer const &renderer) const { renderer.render_menu_item(*this); }
+bool MenuItem::next(bool loop) {
+	return false;
+}
 
-bool MenuItem::next(bool loop) { return false; }
-
-bool MenuItem::prev(bool loop) { return false; }
+bool MenuItem::prev(bool loop) {
+	return false;
+}
 
 // *********************************************************
 // NumericMenuItem
@@ -203,7 +244,9 @@ NumericMenuItem::NumericMenuItem(const char *basename, const char *icon, SelectF
 	}
 };
 
-void NumericMenuItem::set_number_formatter(FormatValueFnPtr format_value_fn) { _format_value_fn = format_value_fn; }
+void NumericMenuItem::set_number_formatter(FormatValueFnPtr format_value_fn) {
+	_format_value_fn = format_value_fn;
+}
 
 Menu *NumericMenuItem::select() {
 	_has_focus = !_has_focus;
@@ -213,13 +256,21 @@ Menu *NumericMenuItem::select() {
 	return nullptr;
 }
 
-void NumericMenuItem::render(MenuComponentRenderer const &renderer) const { renderer.render_numeric_menu_item(*this); }
+void NumericMenuItem::render(MenuComponentRenderer const &renderer) const {
+	renderer.render_numeric_menu_item(*this);
+}
 
-float NumericMenuItem::get_value() const { return _value; }
+float NumericMenuItem::get_value() const {
+	return _value;
+}
 
-float NumericMenuItem::get_min_value() const { return _min_value; }
+float NumericMenuItem::get_min_value() const {
+	return _min_value;
+}
 
-float NumericMenuItem::get_max_value() const { return _max_value; }
+float NumericMenuItem::get_max_value() const {
+	return _max_value;
+}
 
 String NumericMenuItem::get_formatted_value() const {
 	String buffer;
@@ -230,11 +281,17 @@ String NumericMenuItem::get_formatted_value() const {
 	return buffer;
 }
 
-void NumericMenuItem::set_value(float value) { _value = value; }
+void NumericMenuItem::set_value(float value) {
+	_value = value;
+}
 
-void NumericMenuItem::set_min_value(float value) { _min_value = value; }
+void NumericMenuItem::set_min_value(float value) {
+	_min_value = value;
+}
 
-void NumericMenuItem::set_max_value(float value) { _max_value = value; }
+void NumericMenuItem::set_max_value(float value) {
+	_max_value = value;
+}
 
 bool NumericMenuItem::next(bool loop) {
 	_value -= _increment;
@@ -262,7 +319,10 @@ bool NumericMenuItem::prev(bool loop) {
 // MenuSystem
 // *********************************************************
 MenuSystem::MenuSystem(MenuComponentRenderer const &renderer)
-	: _p_root_menu(new Menu("", nullptr)), _p_curr_menu(_p_root_menu), _renderer(renderer) {}
+	: MenuSystem(renderer, "") {}
+
+MenuSystem::MenuSystem(MenuComponentRenderer const &renderer, const char *name)
+	: _p_root_menu(new Menu(name, nullptr)), _p_curr_menu(_p_root_menu), _renderer(renderer) {}
 
 bool MenuSystem::next(bool loop) {
 	if (_p_curr_menu->_p_current_component->has_focus())
@@ -302,9 +362,13 @@ bool MenuSystem::back() {
 	return false;
 }
 
-Menu &MenuSystem::get_root_menu() const { return *_p_root_menu; }
+Menu &MenuSystem::get_root_menu() const {
+	return *_p_root_menu;
+}
 
-Menu const *MenuSystem::get_current_menu() const { return _p_curr_menu; }
+Menu const *MenuSystem::get_current_menu() const {
+	return _p_curr_menu;
+}
 
 void MenuSystem::display() const {
 	if (_p_curr_menu != nullptr) _renderer.render(*_p_curr_menu);

@@ -19,11 +19,11 @@ class MenuComponent {
 	friend class MenuSystem;
 	friend class Menu;
 
-public:
+  public:
 	// Callback for when the MenuComponent is selected.
 	using SelectFnPtr = void (*)(MenuComponent *menu_component);
 
-public:
+  public:
 	// Construct a MenuComponent.
 	MenuComponent(const char *name, const char *icon, SelectFnPtr select_fn);
 
@@ -51,7 +51,7 @@ public:
 	// Sets the function to call when the MenuItem is selected.
 	void set_select_function(SelectFnPtr select_fn);
 
-protected:
+  protected:
 	// Processes the next action.
 	virtual bool next(bool loop = false) = 0;
 
@@ -67,7 +67,7 @@ protected:
 	// Set the current state of the component.
 	void set_current(bool is_current = true);
 
-protected:
+  protected:
 	SelectFnPtr _select_fn;
 	const char *_name;
 	const char *_icon;
@@ -77,14 +77,14 @@ protected:
 
 // A MenuComponent that calls a callback function when selected.
 class MenuItem : public MenuComponent {
-public:
+  public:
 	// Construct a MenuItem.
 	MenuItem(const char *name, const char *icon, SelectFnPtr select_fn);
 
 	// Render the MenuItem.
 	virtual void render(MenuComponentRenderer const &renderer) const;
 
-protected:
+  protected:
 	// This method does nothing in MenuItem.
 	virtual bool next(bool loop = false);
 
@@ -99,24 +99,24 @@ protected:
 
 // A MenuItem that calls MenuSystem::back() when selected.
 class BackMenuItem : public MenuItem {
-public:
+  public:
 	BackMenuItem(const char *name, const char *icon, SelectFnPtr select_fn, MenuSystem *ms);
 
 	virtual void render(MenuComponentRenderer const &renderer) const;
 
-protected:
+  protected:
 	virtual Menu *select();
 
-protected:
+  protected:
 	MenuSystem *_menu_system;
 };
 
 class NumericMenuItem : public MenuItem {
-public:
+  public:
 	// Callback for formatting the numeric value into a String.
 	using FormatValueFnPtr = const String (*)(const float value);
 
-public:
+  public:
 	// Constructor.
 	NumericMenuItem(const char *name, const char *icon, SelectFnPtr select_fn, float value, float min_value, float max_value,
 					float increment = 1.0, FormatValueFnPtr format_value_fn = nullptr);
@@ -136,13 +136,13 @@ public:
 
 	virtual void render(MenuComponentRenderer const &renderer) const;
 
-protected:
+  protected:
 	virtual bool next(bool loop = false);
 	virtual bool prev(bool loop = false);
 
 	virtual Menu *select();
 
-protected:
+  protected:
 	float _value;
 	float _min_value;
 	float _max_value;
@@ -154,7 +154,7 @@ protected:
 class Menu : public MenuComponent {
 	friend class MenuSystem;
 
-public:
+  public:
 	Menu(const char *name, const char *icon, SelectFnPtr select_fn = nullptr);
 
 	// Adds a MenuItem to the Menu.
@@ -172,7 +172,7 @@ public:
 
 	void render(MenuComponentRenderer const &renderer) const;
 
-protected:
+  protected:
 	void set_parent(Menu *p_parent);
 	Menu const *get_parent() const;
 
@@ -186,7 +186,7 @@ protected:
 
 	void add_component(MenuComponent *p_component);
 
-private:
+  private:
 	MenuComponent *_p_current_component;
 	MenuComponent **_menu_components;
 	Menu *_p_parent;
@@ -196,8 +196,9 @@ private:
 };
 
 class MenuSystem {
-public:
+  public:
 	MenuSystem(MenuComponentRenderer const &renderer);
+	MenuSystem(MenuComponentRenderer const &renderer, const char *name);
 
 	void display() const;
 	bool next(bool loop = false);
@@ -209,14 +210,14 @@ public:
 	Menu &get_root_menu() const;
 	Menu const *get_current_menu() const;
 
-private:
+  private:
 	Menu *_p_root_menu;
 	Menu *_p_curr_menu;
 	MenuComponentRenderer const &_renderer;
 };
 
 class MenuComponentRenderer {
-public:
+  public:
 	virtual void render(Menu const &menu) const = 0;
 	virtual void render_menu_item(MenuItem const &menu_item) const = 0;
 	virtual void render_back_menu_item(BackMenuItem const &menu_item) const = 0;
